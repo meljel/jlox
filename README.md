@@ -12,8 +12,11 @@ Feature-level TODOs
 - for..in loops
 - Add methods to numbers (+ other primitive types)
 - [IMPL] /* Block comments */ with newlines
+- Comma operator (C/C++)
+- Ternary operator (?/:)
+- Error for omitting LH operand of binary operators
 
-Semantic-level TODOs
+Code-level TODOs
 - Use multiline strings for GenerateAST code
 
 None - TODO \
