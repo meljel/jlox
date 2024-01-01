@@ -18,6 +18,7 @@ Feature-level TODOs
 
 Code-level TODOs
 - Use multiline strings for GenerateAST code
+- Left associative binary operators helper (hint: operand handle)
 
 None - TODO \
 [IMPL] - implemented \
