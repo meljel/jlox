@@ -1,5 +1,10 @@
 package com.craftinginterpreters.lox;
 
+import java.lang.invoke.MethodHandle;
+//import java.lang.invoke.*;
+import java.lang.invoke.MethodType;
+import java.lang.reflect.Method;
+import java.lang.invoke.MethodHandles;
 import java.util.List;
 
 import static com.craftinginterpreters.lox.TokenType.*;
@@ -17,51 +22,82 @@ class Parser {
         return equality();
     }
 
-    private Expr equality() {
-        Expr expr = comparison();
+    private Expr equality() { // TODO: ABSTRACTION
+//        Expr expr = comparison();
+//
+//        while (match(BANG_EQUAL, EQUAL_EQUAL)) {
+//            Token operator = previous();
+//            Expr right = comparison();
+//            expr = new Expr.Binary(expr, operator, right);
+//        }
+//
+//        return expr;
 
-        while (match(BANG_EQUAL, EQUAL_EQUAL)) {
-            Token operator = previous();
-            Expr right = comparison();
-            expr = new Expr.Binary(expr, operator, right);
-        }
-
-        return expr;
+        return binaryLeft("comparison", BANG_EQUAL, EQUAL_EQUAL);
     }
 
-    private Expr comparison() {
-        Expr expr = term();
+    private Expr comparison() { // TODO: ABSTRACTION
+//        Expr expr = term();
+//
+//        while (match(GREATER, GREATER_EQUAL, LESS, LESS_EQUAL)) {
+//            Token operator = previous();
+//            Expr right = term();
+//            expr = new Expr.Binary(expr, operator, right);
+//        }
+//
+//        return expr;
 
-        while (match(GREATER, GREATER_EQUAL, LESS, LESS_EQUAL)) {
-            Token operator = previous();
-            Expr right = term();
-            expr = new Expr.Binary(expr, operator, right);
-        }
-
-        return expr;
+        return binaryLeft("term", GREATER, GREATER_EQUAL, LESS, LESS_EQUAL);
     }
 
-    private Expr term() {
-        Expr expr = factor();
+    private Expr term() { // TODO: ABSTRACTION
+//        Expr expr = factor();
+//
+//        while (match(MINUS, PLUS)) {
+//            Token operator = previous();
+//            Expr right = factor();
+//            expr = new Expr.Binary(expr, operator, right);
+//        }
+//
+//        return expr;
 
-        while (match(MINUS, PLUS)) {
-            Token operator = previous();
-            Expr right = factor();
-            expr = new Expr.Binary(expr, operator, right);
-        }
-
-        return expr;
+        return binaryLeft("factor", MINUS, PLUS);
     }
 
-    private Expr factor() {
-        Expr expr = unary();
+    private Expr factor() { // TODO: ABSTRACTION
+//        Expr expr = unary();
+//
+//        while (match(SLASH, STAR)) {
+//            Token operator = previous();
+//            Expr right = unary();
+//            expr = new Expr.Binary(expr, operator, right);
+//        }
+//
+//        return expr;
+        return binaryLeft("unary", SLASH, STAR);
+    }
 
-        while (match(SLASH, STAR)) {
-            Token operator = previous();
-            Expr right = unary();
-            expr = new Expr.Binary(expr, operator, right);
+    private Expr binaryLeft(String methodName, TokenType... delimiters) {
+        MethodHandles.Lookup lookup = MethodHandles.lookup();
+        MethodType mt = MethodType.methodType(Expr.class);
+        MethodHandle mh;
+        Expr expr=null;
+        try {
+            mh = lookup.findVirtual(Parser.class, methodName, mt);
+            expr = (Expr) mh.invoke();
+
+            while (match(delimiters)) {
+                Token operator = previous();
+                Expr right = (Expr) mh.invoke();
+                expr = new Expr.Binary(expr, operator, right);
+            }
+        } catch (Exception e) {
+            System.out.println("[DEV] Parser.java: no such method " +
+                    methodName + " in binaryLeft(,).. weird.");
+        } catch (Throwable e) {
+            System.out.println("[DEV] Calling " + methodName +
+                    " threw an exception... super weird.");
         }
-
         return expr;
     }
 
