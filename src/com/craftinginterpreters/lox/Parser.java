@@ -1,9 +1,7 @@
 package com.craftinginterpreters.lox;
 
 import java.lang.invoke.MethodHandle;
-//import java.lang.invoke.*;
 import java.lang.invoke.MethodType;
-import java.lang.reflect.Method;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 
@@ -22,7 +20,7 @@ class Parser {
         return equality();
     }
 
-    private Expr equality() { // TODO: ABSTRACTION
+    private Expr equality() {
 //        Expr expr = comparison();
 //
 //        while (match(BANG_EQUAL, EQUAL_EQUAL)) {
@@ -36,7 +34,8 @@ class Parser {
         return binaryLeft("comparison", BANG_EQUAL, EQUAL_EQUAL);
     }
 
-    private Expr comparison() { // TODO: ABSTRACTION
+    @SuppressWarnings("unused")
+    private Expr comparison() {
 //        Expr expr = term();
 //
 //        while (match(GREATER, GREATER_EQUAL, LESS, LESS_EQUAL)) {
@@ -50,7 +49,8 @@ class Parser {
         return binaryLeft("term", GREATER, GREATER_EQUAL, LESS, LESS_EQUAL);
     }
 
-    private Expr term() { // TODO: ABSTRACTION
+    @SuppressWarnings("unused")
+    private Expr term() {
 //        Expr expr = factor();
 //
 //        while (match(MINUS, PLUS)) {
@@ -64,7 +64,8 @@ class Parser {
         return binaryLeft("factor", MINUS, PLUS);
     }
 
-    private Expr factor() { // TODO: ABSTRACTION
+    @SuppressWarnings("unused")
+    private Expr factor() {
 //        Expr expr = unary();
 //
 //        while (match(SLASH, STAR)) {
@@ -101,6 +102,7 @@ class Parser {
         return expr;
     }
 
+    @SuppressWarnings("unused")
     private Expr unary() {
         if (match(BANG, MINUS)) {
             Token operator = previous();
@@ -173,6 +175,7 @@ class Parser {
         return new ParseError();
     }
 
+    @
     private void synchronize() {
         advance();
 
