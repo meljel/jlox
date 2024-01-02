@@ -15,6 +15,8 @@ Feature-level TODOs
 - Comma operator (C/C++)
 - Ternary operator (?/:)
 - Error for omitting LH operand of binary operators
+- [IMPL] Allow numbers in string concatenation
+- [IMPL] Handle division by 0
 
 Code-level TODOs
 - Use multiline strings for GenerateAST code
