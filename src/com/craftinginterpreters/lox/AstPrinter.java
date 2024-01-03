@@ -8,6 +8,19 @@ class AstPrinter implements Expr.Visitor<String>, Stmt.Visitor<String> {
     }
 
     @Override
+    public String visitBlockStmt(Stmt.Block stmt) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("(block ");
+
+        for (Stmt statement : stmt.statements) {
+            builder.append(statement.accept(this));
+        }
+
+        builder.append(")");
+        return builder.toString();
+    }
+
+    @Override
     public String visitPrintStmt(Stmt.Print stmt) {
         return parenthesize("print", stmt.expression);
     }
@@ -101,14 +114,12 @@ class AstPrinter implements Expr.Visitor<String>, Stmt.Visitor<String> {
             builder.append(" ");
             if (part instanceof Expr) {
                 builder.append(((Expr) part).accept(this));
-//> Statements and State omit
             } else if (part instanceof Stmt) {
                 builder.append(((Stmt) part).accept(this));
-//< Statements and State omit
             } else if (part instanceof Token) {
                 builder.append(((Token) part).lexeme);
             } else if (part instanceof List) {
-                transform(builder, ((List) part).toArray());
+                transform(builder, ((List<?>) part).toArray());
             } else {
                 builder.append(part);
             }
