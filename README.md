@@ -20,9 +20,10 @@ Feature-level TODOs
 
 Code-level TODOs
 - Use multiline strings for GenerateAST code
-- [IMPL] Left associative binary operators helper (hint: method handles)
+- [INPR] Left associative binary operators helper (hint: method handles)
 
 None - TODO \
+[INPR] - in-progress \
 [IMPL] - implemented \
 [TEST] - under test \
 [DONE] - tested 
