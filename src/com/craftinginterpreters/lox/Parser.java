@@ -1,9 +1,10 @@
 package com.craftinginterpreters.lox;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodType;
 import java.lang.invoke.MethodHandles;
-import java.util.List;
 
 import static com.craftinginterpreters.lox.TokenType.*;
 
@@ -20,87 +21,108 @@ class Parser {
         return equality();
     }
 
-    private Expr equality() {
-//        Expr expr = comparison();
-//
-//        while (match(BANG_EQUAL, EQUAL_EQUAL)) {
-//            Token operator = previous();
-//            Expr right = comparison();
-//            expr = new Expr.Binary(expr, operator, right);
-//        }
-//
-//        return expr;
+    private Stmt statement() {
+        if (match(PRINT)) return printStatement();
 
-        return binaryLeft("comparison", BANG_EQUAL, EQUAL_EQUAL);
+        return expressionStatement();
+    }
+
+    private Stmt printStatement() {
+        Expr value = expression();
+        consume(SEMICOLON, "Expect ';' after value.");
+        return new Stmt.Print(value);
+    }
+
+    private Stmt expressionStatement() {
+        Expr expr = expression();
+        consume(SEMICOLON, "Expect ';' after expression.");
+        return new Stmt.Expression(expr);
+    }
+
+    private Expr equality() {
+        Expr expr = comparison();
+
+        while (match(BANG_EQUAL, EQUAL_EQUAL)) {
+            Token operator = previous();
+            Expr right = comparison();
+            expr = new Expr.Binary(expr, operator, right);
+        }
+
+        return expr;
+
+//        return binaryLeft("comparison", BANG_EQUAL, EQUAL_EQUAL);
     }
 
     @SuppressWarnings("unused")
     private Expr comparison() {
-//        Expr expr = term();
-//
-//        while (match(GREATER, GREATER_EQUAL, LESS, LESS_EQUAL)) {
-//            Token operator = previous();
-//            Expr right = term();
-//            expr = new Expr.Binary(expr, operator, right);
-//        }
-//
-//        return expr;
+        Expr expr = term();
 
-        return binaryLeft("term", GREATER, GREATER_EQUAL, LESS, LESS_EQUAL);
+        while (match(GREATER, GREATER_EQUAL, LESS, LESS_EQUAL)) {
+            Token operator = previous();
+            Expr right = term();
+            expr = new Expr.Binary(expr, operator, right);
+        }
+
+        return expr;
+
+//        return binaryLeft("term", GREATER, GREATER_EQUAL, LESS, LESS_EQUAL);
     }
 
     @SuppressWarnings("unused")
     private Expr term() {
-//        Expr expr = factor();
-//
-//        while (match(MINUS, PLUS)) {
-//            Token operator = previous();
-//            Expr right = factor();
-//            expr = new Expr.Binary(expr, operator, right);
-//        }
-//
-//        return expr;
+        Expr expr = factor();
 
-        return binaryLeft("factor", MINUS, PLUS);
+        while (match(MINUS, PLUS)) {
+            Token operator = previous();
+            Expr right = factor();
+            expr = new Expr.Binary(expr, operator, right);
+        }
+
+        return expr;
+
+//        return binaryLeft("factor", MINUS, PLUS);
     }
 
     @SuppressWarnings("unused")
     private Expr factor() {
-//        Expr expr = unary();
+        Expr expr = unary();
+
+        while (match(SLASH, STAR)) {
+            Token operator = previous();
+            Expr right = unary();
+            expr = new Expr.Binary(expr, operator, right);
+        }
+
+        return expr;
+
+//        return binaryLeft("unary", SLASH, STAR);
+    }
+
+//    private Expr binaryLeft(String methodName, TokenType... delimiters) {
+//        MethodHandles.Lookup lookup = MethodHandles.lookup();
+//        MethodType mt = MethodType.methodType(Expr.class);
+//        MethodHandle mh;
+//        Expr expr = null;
 //
-//        while (match(SLASH, STAR)) {
-//            Token operator = previous();
-//            Expr right = unary();
-//            expr = new Expr.Binary(expr, operator, right);
+//        try {
+//            mh = lookup.findVirtual(Parser.class, methodName, mt);
+//            expr = (Expr) mh.invokeExact();
+//
+//            while (match(delimiters)) {
+//                Token operator = previous();
+//                Expr right = (Expr) mh.invokeExact();
+//                expr = new Expr.Binary(expr, operator, right);
+//            }
+//        } catch (NoSuchMethodException | IllegalAccessException e) {
+//            System.out.println("[DEV] Parser.java: no such method " +
+//                    methodName + "() in binaryLeft(,).. weird: " + e.getMessage());
+//        } catch (Throwable e) {
+//            System.out.println("[DEV] Calling " + methodName +
+//                    "() threw an exception... super weird: " + e.getMessage());
 //        }
 //
 //        return expr;
-        return binaryLeft("unary", SLASH, STAR);
-    }
-
-    private Expr binaryLeft(String methodName, TokenType... delimiters) {
-        MethodHandles.Lookup lookup = MethodHandles.lookup();
-        MethodType mt = MethodType.methodType(Expr.class);
-        MethodHandle mh;
-        Expr expr=null;
-        try {
-            mh = lookup.findVirtual(Parser.class, methodName, mt);
-            expr = (Expr) mh.invoke();
-
-            while (match(delimiters)) {
-                Token operator = previous();
-                Expr right = (Expr) mh.invoke();
-                expr = new Expr.Binary(expr, operator, right);
-            }
-        } catch (Exception e) {
-            System.out.println("[DEV] Parser.java: no such method " +
-                    methodName + " in binaryLeft(,).. weird.");
-        } catch (Throwable e) {
-            System.out.println("[DEV] Calling " + methodName +
-                    " threw an exception... super weird.");
-        }
-        return expr;
-    }
+//    }
 
     @SuppressWarnings("unused")
     private Expr unary() {
@@ -175,7 +197,6 @@ class Parser {
         return new ParseError();
     }
 
-    @
     private void synchronize() {
         advance();
 
@@ -192,12 +213,13 @@ class Parser {
         }
     }
 
-    Expr parse() {
-        try {
-            return expression();
-        } catch (ParseError error) {
-            return null;
+    List<Stmt> parse() {
+        List<Stmt> statements = new ArrayList<>();
+        while (!isAtEnd()) {
+            statements.add(statement());
         }
+
+        return statements;
     }
 
 }
