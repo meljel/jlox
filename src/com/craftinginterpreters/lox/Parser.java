@@ -2,9 +2,6 @@ package com.craftinginterpreters.lox;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodType;
-import java.lang.invoke.MethodHandles;
 
 import static com.craftinginterpreters.lox.TokenType.*;
 
@@ -90,8 +87,6 @@ class Parser {
         }
 
         return expr;
-
-//        return binaryLeft("comparison", BANG_EQUAL, EQUAL_EQUAL);
     }
 
     @SuppressWarnings("unused")
@@ -105,8 +100,6 @@ class Parser {
         }
 
         return expr;
-
-//        return binaryLeft("term", GREATER, GREATER_EQUAL, LESS, LESS_EQUAL);
     }
 
     @SuppressWarnings("unused")
@@ -120,8 +113,6 @@ class Parser {
         }
 
         return expr;
-
-//        return binaryLeft("factor", MINUS, PLUS);
     }
 
     @SuppressWarnings("unused")
@@ -135,35 +126,7 @@ class Parser {
         }
 
         return expr;
-
-//        return binaryLeft("unary", SLASH, STAR);
     }
-
-//    private Expr binaryLeft(String methodName, TokenType... delimiters) {
-//        MethodHandles.Lookup lookup = MethodHandles.lookup();
-//        MethodType mt = MethodType.methodType(Expr.class);
-//        MethodHandle mh;
-//        Expr expr = null;
-//
-//        try {
-//            mh = lookup.findVirtual(Parser.class, methodName, mt);
-//            expr = (Expr) mh.invokeExact();
-//
-//            while (match(delimiters)) {
-//                Token operator = previous();
-//                Expr right = (Expr) mh.invokeExact();
-//                expr = new Expr.Binary(expr, operator, right);
-//            }
-//        } catch (NoSuchMethodException | IllegalAccessException e) {
-//            System.out.println("[DEV] Parser.java: no such method " +
-//                    methodName + "() in binaryLeft(,).. weird: " + e.getMessage());
-//        } catch (Throwable e) {
-//            System.out.println("[DEV] Calling " + methodName +
-//                    "() threw an exception... super weird: " + e.getMessage());
-//        }
-//
-//        return expr;
-//    }
 
     @SuppressWarnings("unused")
     private Expr unary() {
