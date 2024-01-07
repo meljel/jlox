@@ -17,6 +17,10 @@ Feature-level TODOs
 - Error for omitting LH operand of binary operators
 - [IMPL] Allow numbers in string concatenation
 - [IMPL] Handle division by 0
+- Jupyter notebook-style eval/print of expression on last line
+- Printing nil gives an error
+- Calling methods on nil gives an error, etc.
+- Add break to loops (and continue)
 
 Code-level TODOs
 - Use multiline strings for GenerateAST code
