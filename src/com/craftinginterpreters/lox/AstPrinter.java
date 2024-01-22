@@ -45,6 +45,11 @@ class AstPrinter implements Expr.Visitor<String>, Stmt.Visitor<String> {
     }
 
     @Override
+    public String visitFunctionStmt(Stmt.Function stmt) {
+        return parenthesize2("fn", stmt.name, stmt.params, stmt.body);
+    }
+
+    @Override
     public String visitIfStmt(Stmt.If stmt) {
         if (stmt.elseBranch == null) {
             return parenthesize2("if..then", stmt.condition, stmt.thenBranch);
@@ -61,6 +66,11 @@ class AstPrinter implements Expr.Visitor<String>, Stmt.Visitor<String> {
     public String visitBinaryExpr(Expr.Binary expr) {
         return parenthesize(expr.operator.lexeme,
                 expr.left, expr.right);
+    }
+
+    @Override
+    public String visitCallExpr(Expr.Call expr) {
+        return parenthesize2("call,args", expr.callee, expr.arguments);
     }
 
     @Override

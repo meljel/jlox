@@ -21,6 +21,10 @@ Feature-level TODOs
 - Printing nil gives an error
 - Calling methods on nil gives an error, etc.
 - Add break to loops (and continue)
+- Native functions
+  - stdout
+  - user input
+  - file i/o
 
 Code-level TODOs
 - Use multiline strings for GenerateAST code
