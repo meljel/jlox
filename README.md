@@ -25,6 +25,7 @@ Feature-level TODOs
   - stdout
   - user input
   - file i/o
+- Lambdas (anonymous functions)
 
 Code-level TODOs
 - Use multiline strings for GenerateAST code

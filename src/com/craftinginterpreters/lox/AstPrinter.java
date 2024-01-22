@@ -26,6 +26,11 @@ class AstPrinter implements Expr.Visitor<String>, Stmt.Visitor<String> {
     }
 
     @Override
+    public String visitReturnStmt(Stmt.Return stmt) {
+        return parenthesize("return", stmt.value);
+    }
+
+    @Override
     public String visitVarStmt(Stmt.Var stmt) {
         if (stmt.initializer == null) {
             return parenthesize2("var", stmt.name);
