@@ -20,12 +20,17 @@ Feature-level TODOs
 - Jupyter notebook-style eval/print of expression on last line
 - Printing nil gives an error
 - Calling methods on nil gives an error, etc.
-- Add break to loops (and continue)
+<!-- - Add break to loops (and continue) -->
 - Native functions
   - stdout
   - user input
   - file i/o
 - Lambdas (anonymous functions)
+- Break statements
+  - should only work within loops (resolver)
+- Warning for unreachable return statement
+- Warning/error for unused local variable
+- Resolver: use indices in an array instead of maps/keys
 
 Code-level TODOs
 - Use multiline strings for GenerateAST code
