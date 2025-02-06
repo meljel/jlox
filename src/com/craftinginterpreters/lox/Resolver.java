@@ -16,7 +16,8 @@ class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 
   private enum FunctionType {
     NONE,
-    FUNCTION
+    FUNCTION,
+    METHOD
   }
 
   void resolve(List<Stmt> statements) {
