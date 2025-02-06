@@ -31,6 +31,9 @@ Feature-level TODOs
 - Warning for unreachable return statement
 - Warning/error for unused local variable
 - Resolver: use indices in an array instead of maps/keys
+- Static methods: use metaclasses to implement these (LoxClass as a LoxInstance)
+- Getters declared by name (area {return pi * r * r;})
+- Access modifiers? perhaps
 
 Code-level TODOs
 - Use multiline strings for GenerateAST code
