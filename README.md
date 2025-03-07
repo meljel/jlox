@@ -34,6 +34,7 @@ Feature-level TODOs
 - Static methods: use metaclasses to implement these (LoxClass as a LoxInstance)
 - Getters declared by name (area {return pi * r * r;})
 - Access modifiers? perhaps
+- Multiple inheritance? [idk]
 
 Code-level TODOs
 - Use multiline strings for GenerateAST code
